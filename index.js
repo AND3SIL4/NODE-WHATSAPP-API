@@ -1,4 +1,5 @@
-const object = require('./connection'); // Import function that connect with the database
+const connect = require('./testConn'); // Import the connect function with data
+
 require('dotenv').config(); // Upload the environment variables
 
 const accountSid = process.env.accountSid;
@@ -12,23 +13,42 @@ const client = require('twilio')(accountSid, authToken);
  * @param {string} body
  * @param {number} numberTo
  */
-function sendMessage(body, numberTo) {
+async function sendMessage(body, numberTo) {
   client.messages
     .create({
       from: 'whatsapp:+14155238886',
       body: body,
       to: `whatsapp:+57${numberTo}`,
     })
-    .then((message) => console.log(message.sid));
+    .then((message) =>
+      console.log(
+        `The message to ${message.to} is currently: ${message.status}`
+      )
+    );
 }
 
 /**
  * This function work calling the function on another file that returns an  array and manipulate in order to send messages
  */
-function main() {
-  object().forEach((e) => {
-    sendMessage(e.body, e.to);
-  });
+async function main() {
+  console.clear();
+  try {
+    const dataFromConnect = await connect(); // Manipulate the information stract to the database
+
+    dataFromConnect.forEach((only) => {
+      console.clear();
+      const body = `Buen día señor(a) ${only.name} ${only.lastName} su pedido ${
+        only.status === 1
+          ? 'Se ha registrado con exito'
+          : 'se encuentra en novedad'
+      }`;
+      const numberTo = only.phone;
+
+      sendMessage(body, numberTo);
+    });
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 main();
