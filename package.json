@@ -4,11 +4,12 @@
   "description": "This is a project to connet whatsapp api for sending message to customers",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "author": "Andres Felipe Silva",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.4",
     "express": "^4.18.2",
     "twilio": "^4.22.0"
   }

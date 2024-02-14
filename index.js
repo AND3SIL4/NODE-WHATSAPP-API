@@ -1,28 +1,34 @@
-const EXPRESS = require('express');
+const object = require('./connection'); // Import function that connect with the database
+require('dotenv').config(); // Upload the environment variables
 
-const APP = EXPRESS();
-const PORT = 3000;
+const accountSid = process.env.accountSid;
+const authToken = process.env.authToken;
 
-const accountSid = 'AC7946af502742b5c7293c8d788db632c5';
-const authToken = 'e75157e2e765dee5115964ca9dd1d379';
-
+// Create a client using twilio
 const client = require('twilio')(accountSid, authToken);
 
 /**
- * SIMPLE APP BACKEND
+ * This function consume the TWILIO API for sending messages, require the following two params
+ * @param {string} body
+ * @param {number} numberTo
  */
-APP.get('/', (req, res) => {
-  res.send(`THIS IS A TEST TO SEND MESSAGES`);
-
+function sendMessage(body, numberTo) {
   client.messages
     .create({
       from: 'whatsapp:+14155238886',
-      body: 'Hello there!',
-      to: 'whatsapp:+573212413656',
+      body: body,
+      to: `whatsapp:+57${numberTo}`,
     })
     .then((message) => console.log(message.sid));
-});
+}
 
-APP.listen(PORT, () => {
-  console.log(`The app is linsting in ${PORT} port`);
-});
+/**
+ * This function work calling the function on another file that returns an  array and manipulate in order to send messages
+ */
+function main() {
+  object().forEach((e) => {
+    sendMessage(e.body, e.to);
+  });
+}
+
+main();
