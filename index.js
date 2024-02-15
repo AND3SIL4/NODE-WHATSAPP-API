@@ -39,7 +39,7 @@ async function main() {
       console.clear();
       const body = `Buen día señor(a) ${only.name} ${only.lastName} su pedido ${
         only.status === 1
-          ? 'Se ha registrado con exito'
+          ? 'se ha registrado con exito'
           : 'se encuentra en novedad'
       }`;
       const numberTo = only.phone;
