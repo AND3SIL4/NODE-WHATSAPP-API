@@ -12,7 +12,7 @@ cron.schedule('*/15 8-17 * * *', async () => {
   if (currentHour >= 8 && currentHour < 18) {
     try {
       const date = new Date();
-      console.log(`This is working. Time: ${date}`);
+      console.log(`Proceso corriendo a las: ${date}`);
     } catch (error) {
       console.error(error);
     }

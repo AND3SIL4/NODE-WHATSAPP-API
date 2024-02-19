@@ -1,54 +1,23 @@
-const connect = require('./testConn'); // Import the connect function with data
+// Import the library to use the periodic time to execute the script
+const cron = require('node-cron');
 
-require('dotenv').config(); // Upload the environment variables
+// Impor the main function
+const message = require('./src/message');
 
-const accountSid = process.env.accountSid;
-const authToken = process.env.authToken;
+// '*/15 8-17 * * * ' => Real time to execute...
+cron.schedule('*/20 * * * * *', function () {
+  const currentHour = new Date().getHours();
 
-// Create a client using twilio
-const client = require('twilio')(accountSid, authToken);
+  if (currentHour >= 8 && currentHour < 18) {
+    try {
+      const date = new Date(); // Get the current running time
+      console.log(`Funcionando a las: ${date}`);
 
-/**
- * This function consume the TWILIO API for sending messages, require the following two params
- * @param {string} body
- * @param {number} numberTo
- */
-async function sendMessage(body, numberTo) {
-  client.messages
-    .create({
-      from: 'whatsapp:+14155238886',
-      body: body,
-      to: `whatsapp:+57${numberTo}`,
-    })
-    .then((message) =>
-      console.log(
-        `The message to ${message.to} is currently: ${message.status}`
-      )
-    );
-}
-
-/**
- * This function work calling the function on another file that returns an  array and manipulate in order to send messages
- */
-async function main() {
-  console.clear();
-  try {
-    const dataFromConnect = await connect(); // Manipulate the information stract to the database
-
-    dataFromConnect.forEach((only) => {
-      console.clear();
-      const body = `Buen día señor(a) ${only.name} ${only.lastName} su pedido ${
-        only.status === 1
-          ? 'se ha registrado con exito'
-          : 'se encuentra en novedad'
-      }`;
-      const numberTo = only.phone;
-
-      sendMessage(body, numberTo);
-    });
-  } catch (error) {
-    console.error(error);
+      message(); // Run the main process...
+    } catch (e) {
+      console.error('Ha ocurrido un error: ', e);
+    }
+  } else {
+    console.log('Tarea fuera del horario permitido (8 am - 6 pm).');
   }
-}
-
-main();
+});

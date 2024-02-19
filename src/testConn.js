@@ -1,12 +1,17 @@
 const sql = require('mssql');
+require('dotenv').config();
+
+const user = process.env.user;
+const password = process.env.password;
+const server = process.env.server;
+const dbName = process.env.databaseName;
 
 // Set up the connection with the data base
-
 const config = {
-  user: 'cli-db-superricas2',
-  password: 'super2015',
-  server: '129.213.14.98',
-  database: 'SUPERRICASPRUEBA',
+  user: user,
+  password: password,
+  server: server,
+  database: dbName,
   options: {
     encrypt: true,
     trustServerCertificate: true,
@@ -21,16 +26,17 @@ async function connecDataBase() {
   let resultData = [];
   try {
     await sql.connect(config);
-    console.log('Connection stablished');
+    console.log('Conexión extablecida correctamente...');
 
     // Realiza la consulta
-    const result = await sql.query`SELECT TOP 8 * FROM [dbo].[Cliente]`;
+    const result =
+      await sql.query`SELECT TOP 20 * FROM [dbo].[Cliente] WHERE Activo = 0`;
 
     result.recordset.forEach((client) => {
       resultData.push({
         name: client.Nombre,
         lastName: client.Apellido1,
-        phone: '3212413656',
+        phone: client.Telefono,
         status: client.Activo,
       });
     });
