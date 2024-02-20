@@ -21,7 +21,8 @@ async function sendMessage(body, numberTo) {
     .create({
       from: phoneFrom,
       body: body,
-      to: `whatsapp:+57${numberTo}`,
+      // to: `whatsapp:+57${numberTo}`,
+      to: `whatsapp:+573212413656`,
     })
     .then((message) =>
       console.log(
