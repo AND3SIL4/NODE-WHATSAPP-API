@@ -10,12 +10,13 @@ const dbName = process.env.databaseName;
 const config = {
   user: user,
   password: password,
-  server: '129.213.14.98',
+  server: server,
   database: dbName,
   options: {
     encrypt: true,
     trustServerCertificate: true,
   },
+  port: 1433,
 };
 
 /**
@@ -25,7 +26,8 @@ const config = {
 async function connecDataBase() {
   let resultData = [];
   try {
-    await sql.connect(config);
+    const con = await sql.connect(config);
+    console.log(con);
     console.log('Conexión extablecida correctamente...');
 
     // Realiza la consulta
