@@ -11,7 +11,8 @@ const phoneFrom = process.env.phone;
 const client = require('twilio')(accountSid, authToken);
 
 /**
- * This function consume the TWILIO API for sending messages, require the following two params
+ * This function consume the TWILIO API for sending messages, require the
+ * following two params
  * @param {string} body
  * @param {number} numberTo
  */
@@ -37,21 +38,25 @@ async function sendMessage(body, numberTo) {
  * @param {number} digit
  * @returns boolean
  */
-function startWhitThree(number, digit) {
-  const regex = new RegExp(`^${digit}`);
+function startWhitThree(number) {
+  // Expresión regular para verificar que el número empiece con 3
+  // y tenga 10 dígitos
+  var regex = /^3\d{9}$/;
 
-  if (regex.test(number)) {
-    return true;
-  }
+  // Verificar si el número coincide con la expresión regular
+  return regex.test(number);
 }
 
 /**
- * This function work calling the function on another file that returns an  array and manipulate in order to send messages
+ * This function work calling the function on another file that returns an
+ * array and manipulate in order to send messages
  */
 async function main() {
   try {
-    const dataFromConnect = await connect(); // Manipulate the information stract to the database
+    // Manipulate the information stract to the database
+    const dataFromConnect = await connect();
 
+    // Iterate the result sent for connection function
     dataFromConnect.forEach((only) => {
       const body = `Buen día señor(a) ${only.name} ${only.lastName} su pedido ${
         only.status === 1
@@ -60,13 +65,13 @@ async function main() {
       }`;
       const numberTo = only.phone;
 
-      if (!startWhitThree(numberTo, 3) && numberTo < 10) {
-        console.log('Número de celular invalido...');
-        return;
+      // Check the number with start for digit 3
+      if (startWhitThree(numberTo)) {
+        // Function for sending message to the customer
+        sendMessage(body, numberTo);
+      } else {
+        console.log(`Número de celular ${numberTo} invalido`);
       }
-      console.log(numberTo);
-
-      sendMessage(body, numberTo); // Function for sending message to the customer
     });
   } catch (error) {
     console.error(error);

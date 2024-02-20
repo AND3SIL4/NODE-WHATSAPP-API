@@ -10,7 +10,7 @@ const dbName = process.env.databaseName;
 const config = {
   user: user,
   password: password,
-  server: server,
+  server: '129.213.14.98',
   database: dbName,
   options: {
     encrypt: true,
