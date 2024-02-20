@@ -41,8 +41,10 @@ Ensure you have the following environment variables set:
 - mssql
 - node-cron
 - Twilio
-- Author
-- Andres Felipe Silva
+
+## Author
+
+Andres Felipe Silva
 
 ## License
 
