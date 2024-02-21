@@ -26,13 +26,12 @@ const config = {
 async function connecDataBase() {
   let resultData = [];
   try {
-    const con = await sql.connect(config);
-    console.log(con);
+    await sql.connect(config);
     console.log('Conexión extablecida correctamente...');
 
     // Realiza la consulta
     const result =
-      await sql.query`SELECT TOP 20 * FROM [dbo].[Cliente] WHERE Activo = 0`;
+      await sql.query`SELECT TOP 10 Nombre, Apellido1, Telefono, Activo FROM [dbo].[Cliente] WHERE Activo = 1`;
 
     result.recordset.forEach((client) => {
       resultData.push({

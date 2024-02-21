@@ -57,6 +57,10 @@ async function main() {
     // Manipulate the information stract to the database
     const dataFromConnect = await connect();
 
+    if (dataFromConnect.length === 0) {
+      console.log('No hay datos para enviar mensajes...');
+    }
+
     // Iterate the result sent for connection function
     dataFromConnect.forEach((only) => {
       const body = `Buen día señor(a) ${only.name} ${only.lastName} su pedido ${
