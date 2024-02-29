@@ -1,13 +1,18 @@
-const sql = require('mssql');
-require('dotenv').config();
+import mssql from 'mssql';
+import { config } from 'dotenv';
+import { ColorsStylesForText as textStyle } from './styles/textStyle.js';
 
+// Crear instancia de los colores para el texto
+const text = new textStyle();
+
+config();
 const user = process.env.user;
 const password = process.env.password;
 const server = process.env.server;
 const dbName = process.env.databaseName;
 
 // Set up the connection with the data base
-const config = {
+const settings = {
   user: user,
   password: password,
   server: server,
@@ -23,15 +28,18 @@ const config = {
  * Function to connect a dabase
  * @returns {string[]} resultData is an arary that contains the result data of the query set
  */
-async function connecDataBase() {
+export async function connecDataBase() {
   let resultData = [];
   try {
-    await sql.connect(config);
-    console.log('Conexión extablecida correctamente...');
+    await mssql.connect(settings);
+    text.onSuccess(
+      'Conexión a la base de datos extablecida correctamente',
+      true
+    );
 
     // Realiza la consulta
     const result =
-      await sql.query`SELECT TOP 10 Nombre, Apellido1, Telefono, Activo FROM [dbo].[Cliente] WHERE Activo = 1`;
+      await mssql.query`SELECT TOP 10 Nombre, Apellido1, Telefono, Activo FROM [dbo].[Cliente] WHERE Activo = 1`;
 
     result.recordset.forEach((client) => {
       resultData.push({
@@ -44,9 +52,7 @@ async function connecDataBase() {
   } catch (e) {
     console.error(e);
   } finally {
-    sql.close();
+    mssql.close();
   }
   return resultData;
 }
-
-module.exports = connecDataBase;

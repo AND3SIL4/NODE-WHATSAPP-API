@@ -1,14 +1,18 @@
-const connect = require('./testConn'); // Import the connect function with data
+import { connecDataBase as connect } from './testConn.js';
+import { config } from 'dotenv';
+import twilio from 'twilio';
+import { ColorsStylesForText as textStyle } from './styles/textStyle.js';
 
-require('dotenv').config(); // Upload the environment variables
-
+config();
 // Get environ variables
 const accountSid = process.env.accountSid;
 const authToken = process.env.authToken;
 const phoneFrom = process.env.phone;
 
 // Create a client using twilio
-const client = require('twilio')(accountSid, authToken);
+const client = twilio(accountSid, authToken);
+
+const text = new textStyle(); // instancia de los estilos
 
 /**
  * This function consume the TWILIO API for sending messages, require the
@@ -24,13 +28,13 @@ async function sendMessage(body, numberTo) {
       // to: `whatsapp:+57${numberTo}`,
       to: `whatsapp:+573212413656`,
     })
-    .then((message) =>
-      console.log(
-        `Destinatario: ${message.to} estado: ${
-          message.status === 'queued' ? 'enviado' : 'error'
-        }`
-      )
-    );
+    .then((message) => {
+      const respuesta = `Mensaje ${
+        message.status === 'queued' ? 'enviado' : 'error'
+      } - ${numberTo}`;
+
+      text.onSuccess(respuesta, false);
+    });
 }
 
 /**
@@ -52,7 +56,7 @@ function startWhitThree(number) {
  * This function work calling the function on another file that returns an
  * array and manipulate in order to send messages
  */
-async function main() {
+export async function main() {
   try {
     // Manipulate the information stract to the database
     const dataFromConnect = await connect();
@@ -75,12 +79,11 @@ async function main() {
         // Function for sending message to the customer
         sendMessage(body, numberTo);
       } else {
-        console.log(`Número de celular ${numberTo} invalido`);
+        const respuesta = `Número de celular ${numberTo} invalido`;
+        text.onFailed(respuesta);
       }
     });
   } catch (error) {
     console.error(error);
   }
 }
-
-module.exports = main;
