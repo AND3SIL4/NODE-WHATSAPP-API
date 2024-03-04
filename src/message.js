@@ -1,7 +1,7 @@
-import { connecDataBase as connect } from './testConn.js';
 import { config } from 'dotenv';
 import twilio from 'twilio';
 import { ColorsStylesForText as textStyle } from './styles/textStyle.js';
+import { main as myJson } from './testConn.js';
 
 config();
 // Get environ variables
@@ -12,7 +12,7 @@ const phoneFrom = process.env.phone;
 // Create a client using twilio
 const client = twilio(accountSid, authToken);
 
-const text = new textStyle(); // instancia de los estilos
+const text = new textStyle(); // Style instance
 
 /**
  * This function consume the TWILIO API for sending messages, require the
@@ -26,14 +26,15 @@ async function sendMessage(body, numberTo) {
       from: phoneFrom,
       body: body,
       // to: `whatsapp:+57${numberTo}`,
+      // to: `whatsapp:+573202329139`,
       to: `whatsapp:+573212413656`,
     })
     .then((message) => {
-      const respuesta = `Mensaje ${
-        message.status === 'queued' ? 'enviado' : 'error'
+      const response = `Message ${
+        message.status === 'queued' ? 'sent' : 'error'
       } - ${numberTo}`;
 
-      text.onSuccess(respuesta, false);
+      text.onSuccess(response, false);
     });
 }
 
@@ -44,11 +45,10 @@ async function sendMessage(body, numberTo) {
  * @returns boolean
  */
 function startWhitThree(number) {
-  // Expresión regular para verificar que el número empiece con 3
-  // y tenga 10 dígitos
+  // Regular expression to check the length of the phone number, I gotta start with number 3 and contains 10 digits
   var regex = /^3\d{9}$/;
 
-  // Verificar si el número coincide con la expresión regular
+  // Check the regular expression
   return regex.test(number);
 }
 
@@ -58,29 +58,30 @@ function startWhitThree(number) {
  */
 export async function main() {
   try {
-    // Manipulate the information stract to the database
-    const dataFromConnect = await connect();
+    // Income the new data in order to send messages 
+    const res = await myJson();
 
-    if (dataFromConnect.length === 0) {
-      console.log('No hay datos para enviar mensajes...');
-    }
+    // Check the new data to know if the array is empty
+    if (res.length === 0)
+      console.log('There is no new data to send messages');
 
     // Iterate the result sent for connection function
-    dataFromConnect.forEach((only) => {
-      const body = `Buen día señor(a) ${only.name} ${only.lastName} su pedido ${
-        only.status === 1
+    res.forEach((element) => {
+      const body = `Buen día señor(a) ${element.NombreCliente} ${
+        element.ApellidoCliente
+      } su pedido: ${element.CodigoPedido} ${
+        element.esActivo === 1
           ? 'se ha registrado con exito'
           : 'se encuentra en novedad'
-      }`;
-      const numberTo = only.phone;
+      }. Cantidad solicitada: ${element.CantidadPedido}`;
 
       // Check the number with start for digit 3
-      if (startWhitThree(numberTo)) {
+      if (startWhitThree(element.TelefonoCliente)) {
         // Function for sending message to the customer
-        sendMessage(body, numberTo);
+        sendMessage(body, element.TelefonoCliente);
       } else {
-        const respuesta = `Número de celular ${numberTo} invalido`;
-        text.onFailed(respuesta);
+        const response = `Phone number ${element.TelefonoCliente} invalid`;
+        text.onFailed(response);
       }
     });
   } catch (error) {

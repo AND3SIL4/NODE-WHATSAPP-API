@@ -1,0 +1,137 @@
+[
+  {
+    "CodigoPedido": "8905203",
+    "CodigoCliente": "11541",
+    "NombreCliente": "ANGIE PAOLA GUALTEROS",
+    "ApellidoCliente": null,
+    "TelefonoCliente": "3202716111",
+    "esActivo": 0,
+    "CantidadPedido": 1
+  },
+  {
+    "CodigoPedido": "9000458",
+    "CodigoCliente": "10430",
+    "NombreCliente": "HENAO ARCELA",
+    "ApellidoCliente": null,
+    "TelefonoCliente": "7844431",
+    "esActivo": 1,
+    "CantidadPedido": 3
+  },
+  {
+    "CodigoPedido": "9000458",
+    "CodigoCliente": "10430",
+    "NombreCliente": "HENAO ARCELA",
+    "ApellidoCliente": null,
+    "TelefonoCliente": "7844431",
+    "esActivo": 1,
+    "CantidadPedido": 3
+  },
+  {
+    "CodigoPedido": "97468",
+    "CodigoCliente": "11419",
+    "NombreCliente": "CLIENTE OCASIONAL ZONA 61913",
+    "ApellidoCliente": "",
+    "TelefonoCliente": "",
+    "esActivo": 1,
+    "CantidadPedido": 8
+  },
+  {
+    "CodigoPedido": "99132",
+    "CodigoCliente": "11421",
+    "NombreCliente": "MARIA OLIVA",
+    "ApellidoCliente": "CIFUENTES",
+    "TelefonoCliente": "7844944",
+    "esActivo": 1,
+    "CantidadPedido": 8
+  },
+  {
+    "CodigoPedido": "99132",
+    "CodigoCliente": "11421",
+    "NombreCliente": "MARIA OLIVA",
+    "ApellidoCliente": "CIFUENTES",
+    "TelefonoCliente": "7844944",
+    "esActivo": 1,
+    "CantidadPedido": 3
+  },
+  {
+    "CodigoPedido": "98116",
+    "CodigoCliente": "11422",
+    "NombreCliente": "CLAUDIA",
+    "ApellidoCliente": "PEDREROS",
+    "TelefonoCliente": "3102232523",
+    "esActivo": 1,
+    "CantidadPedido": 8
+  },
+  {
+    "CodigoPedido": "8995391",
+    "CodigoCliente": "11426",
+    "NombreCliente": "MORENO ALBERTO",
+    "ApellidoCliente": null,
+    "TelefonoCliente": "8149787",
+    "esActivo": 0,
+    "CantidadPedido": 3
+  },
+  {
+    "CodigoPedido": "8995391",
+    "CodigoCliente": "11426",
+    "NombreCliente": "MORENO ALBERTO",
+    "ApellidoCliente": null,
+    "TelefonoCliente": "8149787",
+    "esActivo": 0,
+    "CantidadPedido": 8
+  },
+  {
+    "CodigoPedido": "8995391",
+    "CodigoCliente": "11426",
+    "NombreCliente": "MORENO ALBERTO",
+    "ApellidoCliente": null,
+    "TelefonoCliente": "8149787",
+    "esActivo": 0,
+    "CantidadPedido": 8
+  },
+  {
+    "CodigoPedido": "8898151",
+    "CodigoCliente": "11427",
+    "NombreCliente": "JORGE CHAVARRO",
+    "ApellidoCliente": null,
+    "TelefonoCliente": "3208157506",
+    "esActivo": 0,
+    "CantidadPedido": 2
+  },
+  {
+    "CodigoPedido": "8898151",
+    "CodigoCliente": "11427",
+    "NombreCliente": "JORGE CHAVARRO",
+    "ApellidoCliente": null,
+    "TelefonoCliente": "3208157506",
+    "esActivo": 0,
+    "CantidadPedido": 8
+  },
+  {
+    "CodigoPedido": "9000568",
+    "CodigoCliente": "11542",
+    "NombreCliente": "CLIENTE OCASIONAL ZONA 61166",
+    "ApellidoCliente": "",
+    "TelefonoCliente": "",
+    "esActivo": 1,
+    "CantidadPedido": 12
+  },
+  {
+    "CodigoPedido": "9000568",
+    "CodigoCliente": "11542",
+    "NombreCliente": "CLIENTE OCASIONAL ZONA 61166",
+    "ApellidoCliente": "",
+    "TelefonoCliente": "",
+    "esActivo": 1,
+    "CantidadPedido": 20
+  },
+  {
+    "CodigoPedido": "9000568",
+    "CodigoCliente": "11542",
+    "NombreCliente": "CLIENTE OCASIONAL ZONA 61166",
+    "ApellidoCliente": "",
+    "TelefonoCliente": "",
+    "esActivo": 1,
+    "CantidadPedido": 20
+  }
+]

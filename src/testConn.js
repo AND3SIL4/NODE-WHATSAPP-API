@@ -41,7 +41,7 @@ async function connecDataBase() {
 
     // Realiza la consulta
     const result = await mssql.query`
-      SELECT TOP 10
+      SELECT TOP 20
       p.Codigo CodigoPedido, 
       c.Codigo CodigoCliente,
       Nombre NombreCliente, 
@@ -50,7 +50,7 @@ async function connecDataBase() {
       Activo esActivo, 
       p.Cantidad CantidadPedido
       FROM [dbo].[ultimopedido] p INNER JOIN [dbo].[Cliente] c 
-      ON p.usuario = c.Codigo WHERE Activo = 1;
+      ON p.usuario = c.Codigo
       `;
 
     return result.recordset;
@@ -66,6 +66,7 @@ async function connecDataBase() {
  * @param {string} filePath
  * @returns
  */
+
 async function readData(filePath) {
   try {
     const data = await readFile(filePath, 'utf8');
@@ -77,7 +78,7 @@ async function readData(filePath) {
   } catch (e) {
     console.log('Error code is: ', e.code);
     if (e.code === 'ENOENT') {
-      return {};
+      return [];
     } else {
       text.onFailed(e);
       throw new Error('Error al leer los archivos');
@@ -100,7 +101,7 @@ async function writeData(filePath, newData) {
   }
 }
 
-async function main() {
+export async function main() {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
 
@@ -118,11 +119,34 @@ async function main() {
   // Tomar los nuevos datos
   const nuevosDatos = await connecDataBase();
 
+  let datosParaAgregar = [];
+
+  let exist = 0;
+  let noExist = 0;
+  nuevosDatos.forEach((datoNuevo) => {
+    let datoExiste = false;
+    datosExistentes.forEach((datoExistente) => {
+      if (datoNuevo.CodigoPedido === datoExistente.CodigoPedido) {
+        datoExiste = true;
+        return;
+      }
+    });
+
+    if (!datoExiste) {
+      datosParaAgregar.push(datoNuevo);
+      exist++;
+    } else {
+      noExist++;
+    }
+  });
+  console.log('Total new data: ', exist);
+  console.log('Total exist data: ', noExist);
+
   // Agregar o actualizar los nuevos datos con los datos anteriores
-  datosExistentes = [...datosExistentes, ...nuevosDatos];
+  // datosExistentes = [...datosExistentes, ...nuevosDatos];
 
   // Escribir datos en el archivo JSON
-  await writeData(filePath, datosExistentes);
-}
+  await writeData(filePath, [...datosExistentes, ...datosParaAgregar]);
 
-main();
+  return datosParaAgregar;
+}
