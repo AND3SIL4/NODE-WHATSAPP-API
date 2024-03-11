@@ -58,29 +58,28 @@ function startWhitThree(number) {
  */
 export async function main() {
   try {
-    // Income the new data in order to send messages 
+    // Income the new data in order to send messages
     const res = await myJson();
 
     // Check the new data to know if the array is empty
-    if (res.length === 0)
-      console.log('There is no new data to send messages');
+    if (res.length === 0) console.log('There is no new data to send messages');
 
     // Iterate the result sent for connection function
     res.forEach((element) => {
-      const body = `Buen día señor(a) ${element.NombreCliente} ${
-        element.ApellidoCliente
-      } su pedido: ${element.CodigoPedido} ${
-        element.esActivo === 1
+      const body = `Buen día señor(a) ${element.RazonSocial} su pedido: ${
+        element.DocNum
+      } ${
+        element.DistActivo === 'Y'
           ? 'se ha registrado con exito'
           : 'se encuentra en novedad'
-      }. Cantidad solicitada: ${element.CantidadPedido}`;
+      }. Cantidad solicitada: ${element.ValorBruto}`;
 
       // Check the number with start for digit 3
-      if (startWhitThree(element.TelefonoCliente)) {
+      if (startWhitThree(element.DistTelefono)) {
         // Function for sending message to the customer
-        sendMessage(body, element.TelefonoCliente);
+        sendMessage(body, element.DistTelefono);
       } else {
-        const response = `Phone number ${element.TelefonoCliente} invalid`;
+        const response = `Phone number ${element.DistTelefono} invalid`;
         text.onFailed(response);
       }
     });

@@ -40,6 +40,7 @@ build/Release
 
 # Dependency directories
 node_modules/
+
 # Prueba
 jspm_packages/
 
@@ -129,3 +130,5 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+data

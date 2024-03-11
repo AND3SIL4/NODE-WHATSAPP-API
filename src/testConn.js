@@ -28,29 +28,40 @@ const settings = {
 };
 
 /**
- * Function to connect a dabase
- * @returns {string[]} resultData is an arary that contains the result data of the query set
+ * Function to connect a data base
+ * @returns {string[]} resultData is an array that contains the result data of the query set
  */
-async function connecDataBase() {
+async function connectDataBase() {
   try {
     await mssql.connect(settings);
-    text.onSuccess(
-      'Conexión a la base de datos extablecida correctamente',
-      true
-    );
+    text.onSuccess('Connection established successfully', true);
 
     // Realiza la consulta
     const result = await mssql.query`
-      SELECT TOP 20
-      p.Codigo CodigoPedido, 
-      c.Codigo CodigoCliente,
-      Nombre NombreCliente, 
-      Apellido1 ApellidoCliente, 
-      Telefono TelefonoCliente, 
-      Activo esActivo, 
-      p.Cantidad CantidadPedido
-      FROM [dbo].[ultimopedido] p INNER JOIN [dbo].[Cliente] c 
-      ON p.usuario = c.Codigo
+    SELECT TOP 10 P.DocNum, 
+    P.FchaInsert, 
+    P.CardCode, 
+    P.ZonaSN, 
+    P.EstadoPedido, 
+    P.PedidoSAP, 
+    P.FchaInsertSAP, 
+    P.TipoDcmnto, 
+    P.ValorBruto, 
+    P.ValorTotal,
+    D.RazonSocial, 
+    D.DistContacto, 
+    D.DistTelefono, 
+    D.DistActivo, 
+    D.DistEDS, 
+    D.Coordinador, 
+    D.TelfCoord,
+    CASE P.EstadoPedido WHEN 'ERROR' THEN (SELECT substring(Mnsje,65,50) FROM CSS_Mnsje_SrvcioWin 
+    WHERE ObjType like '%Orden Venta%' and DocNum = P.DocNum GROUP BY substring(Mnsje,65,50)) END Error
+    FROM CSS_PedidoPreventa P
+    INNER JOIN WS_Distribuidor D
+    ON D.DistCodigo = P.CardCode
+    WHERE P.FchaInsert >= dateadd(MINUTE,-60,getdate())
+    and P.EstadoPedido <> 'Pendiente'
       `;
 
     return result.recordset;
@@ -70,7 +81,7 @@ async function connecDataBase() {
 async function readData(filePath) {
   try {
     const data = await readFile(filePath, 'utf8');
-    // Valida si el archivo esta vacio y devuelte una lista vacia
+    // Valida si el archivo esta vacío y devuelve una lista vacía
     if (!data.trim()) {
       return [];
     }
@@ -87,14 +98,14 @@ async function readData(filePath) {
 }
 
 /**
- * This function take newdata and write and update the data in a local file
+ * This function take new data and write and update the data in a local file
  * @param {string} filePath
  * @param {object} newData
  */
 async function writeData(filePath, newData) {
   try {
     await writeFile(filePath, JSON.stringify(newData, null, 2), 'utf8');
-    text.onSuccess('Datos guardados correctamente', true);
+    text.onSuccess('Data save correctly', true);
   } catch (e) {
     text.onFailed(e);
     throw new Error('Error al guardar los datos');
@@ -117,7 +128,7 @@ export async function main() {
   }
 
   // Tomar los nuevos datos
-  const nuevosDatos = await connecDataBase();
+  const nuevosDatos = await connectDataBase();
 
   let datosParaAgregar = [];
 
