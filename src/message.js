@@ -72,12 +72,12 @@ export async function main() {
       // Message for to be sent
       const bodyDistribuidor = `Buen día señores *${
         element.RazonSocial
-      }*, su pedido *#${element.DocNum}*, ${
+      }*, su pedido *#${element.DocNum}* 😊👍 ${
         element.EstadoPedido === 'Insertado'
           ? `fue recibido desde genesis el día ${receivedDate.toLocaleDateString()} y fue insertado en SAP el día ${insertDate.toLocaleDateString()}. Estado pedido: ${
               element.TipoDcmnto === 'Orden'
-                ? '*EXITOSO*'
-                : '*RETENIDO POR CARTERA*, por favor comunicarse lo más pronto posible'
+                ? '*EXITOSO ✅*'
+                : '*RETENIDO POR CARTERA 🔻*, por favor comunicarse lo más pronto posible'
             }. El valor bruto del pedido es de: *$${
               element.ValorBruto
             }* y el valor total es de: *$${element.ValorTotal}*. Zona SN: *${
@@ -88,14 +88,14 @@ export async function main() {
 
       const bodyCoordinador = `Buen día coordinador(a) *${
         element.Coordinador
-      }*, el pedido ${element.DocNum} de la distribuidora *${
+      }*, el pedido *#${element.DocNum}* 😊👍 de la distribuidora *${
         element.RazonSocial
       }* ${
         element.EstadoPedido === 'Insertado'
           ? `fue recibido desde genesis el día ${receivedDate.toLocaleDateString()} y fue insertado en SAP el día ${insertDate.toLocaleDateString()}. Estado pedido: ${
               element.TipoDcmnto === 'Orden'
-                ? '*EXITOSO*'
-                : '*RETENIDO POR CARTERA*, por favor comunicarse lo más pronto posible'
+                ? '*EXITOSO ✅*'
+                : '*RETENIDO POR CARTERA 🔻*, por favor comunicarse lo más pronto posible'
             }. El valor bruto del pedido es de: *$${
               element.ValorBruto
             }* y el valor total es de: *$${element.ValorTotal}*. Zona SN: *${
