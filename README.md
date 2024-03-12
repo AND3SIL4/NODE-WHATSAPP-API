@@ -7,6 +7,11 @@ This project is designed to connect to the WhatsApp API for sending messages to 
 1. Clone the repository: `git clone https://github.com/and3sil4/whatsapp-api.git`
 2. Navigate to the project directory: `cd whatsapp-api`
 3. Install dependencies: `npm install`
+4. Para ejecutar el script en segundo plano:
+   1. `npm install -g pm2`
+   2. pm2 start tu_script.js --name "nombre_de_proceso"
+   3. Para detener el proceso: `pm2 stop nombre_de_proceso`
+   4. Para reiniciar el proceso> `pm2 restart nombre_de_proceso`
 
 ## Usage
 
