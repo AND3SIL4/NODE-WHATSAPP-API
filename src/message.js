@@ -66,18 +66,49 @@ export async function main() {
 
     // Iterate the result sent for connection function
     res.forEach((element) => {
-      const body = `Buen día señor(a) ${element.RazonSocial} su pedido: ${
-        element.DocNum
-      } ${
-        element.DistActivo === 'Y'
-          ? 'se ha registrado con exito'
-          : 'se encuentra en novedad'
-      }. Cantidad solicitada: ${element.ValorBruto}`;
+      const receivedDate = new Date(element.FchaInsert);
+      const insertDate = new Date(element.FchaInsertSAP);
+
+      // Message for to be sent
+      const bodyDistribuidor = `Buen día señores *${
+        element.RazonSocial
+      }*, su pedido *#${element.DocNum}*, ${
+        element.EstadoPedido === 'Insertado'
+          ? `fue recibido desde genesis el día ${receivedDate.toLocaleDateString()} y fue insertado en SAP el día ${insertDate.toLocaleDateString()}. Estado pedido: ${
+              element.TipoDcmnto === 'Orden'
+                ? '*EXITOSO*'
+                : '*RETENIDO POR CARTERA*, por favor comunicarse lo más pronto posible'
+            }. El valor bruto del pedido es de: *$${
+              element.ValorBruto
+            }* y el valor total es de: *$${element.ValorTotal}*. Zona SN: *${
+              element.ZonaSN
+            }*. EDS a la que pertenece el pedido: *${element.DistEDS}*.`
+          : 'no se pudo recibir debido a un error'
+      } `;
+
+      const bodyCoordinador = `Buen día coordinador(a) *${
+        element.Coordinador
+      }*, el pedido ${element.DocNum} de la distribuidora *${
+        element.RazonSocial
+      }* ${
+        element.EstadoPedido === 'Insertado'
+          ? `fue recibido desde genesis el día ${receivedDate.toLocaleDateString()} y fue insertado en SAP el día ${insertDate.toLocaleDateString()}. Estado pedido: ${
+              element.TipoDcmnto === 'Orden'
+                ? '*EXITOSO*'
+                : '*RETENIDO POR CARTERA*, por favor comunicarse lo más pronto posible'
+            }. El valor bruto del pedido es de: *$${
+              element.ValorBruto
+            }* y el valor total es de: *$${element.ValorTotal}*. Zona SN: *${
+              element.ZonaSN
+            }*. EDS a la que pertenece el pedido: *${element.DistEDS}*.`
+          : 'no se pudo recibir debido a un error'
+      }`;
 
       // Check the number with start for digit 3
       if (startWhitThree(element.DistTelefono)) {
         // Function for sending message to the customer
-        sendMessage(body, element.DistTelefono);
+        sendMessage(bodyDistribuidor, element.DistTelefono); // Distribuidor message
+        sendMessage(bodyCoordinador, element.TelfCoord); // Coordinador message
       } else {
         const response = `Phone number ${element.DistTelefono} invalid`;
         text.onFailed(response);

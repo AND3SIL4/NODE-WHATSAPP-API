@@ -38,7 +38,7 @@ async function connectDataBase() {
 
     // Realiza la consulta
     const result = await mssql.query`
-    SELECT TOP 10 P.DocNum, 
+    SELECT TOP 2 P.DocNum, 
     P.FchaInsert, 
     P.CardCode, 
     P.ZonaSN, 
@@ -62,7 +62,7 @@ async function connectDataBase() {
     ON D.DistCodigo = P.CardCode
     WHERE P.FchaInsert >= dateadd(MINUTE,-60,getdate())
     and P.EstadoPedido <> 'Pendiente'
-      `;
+    `;
 
     return result.recordset;
   } catch (e) {
@@ -116,7 +116,7 @@ export async function main() {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
 
-  const filePath = path.join(__dirname, 'data', 'data.json');
+  const filePath = path.join(__dirname, '../data', 'data.json');
 
   // Leer los datos existentes
   let datosExistentes = await readData(filePath);
@@ -132,12 +132,18 @@ export async function main() {
 
   let datosParaAgregar = [];
 
+  // Counters
   let exist = 0;
   let noExist = 0;
+
+  // Iterator to validate if the messages has sent before
   nuevosDatos.forEach((datoNuevo) => {
     let datoExiste = false;
     datosExistentes.forEach((datoExistente) => {
-      if (datoNuevo.CodigoPedido === datoExistente.CodigoPedido) {
+      if (
+        datoNuevo.DocNum === datoExistente.DocNum &&
+        datoNuevo.TipoDcmnto === datoExistente.TipoDcmnto
+      ) {
         datoExiste = true;
         return;
       }
@@ -152,9 +158,6 @@ export async function main() {
   });
   console.log('Total new data: ', exist);
   console.log('Total exist data: ', noExist);
-
-  // Agregar o actualizar los nuevos datos con los datos anteriores
-  // datosExistentes = [...datosExistentes, ...nuevosDatos];
 
   // Escribir datos en el archivo JSON
   await writeData(filePath, [...datosExistentes, ...datosParaAgregar]);
