@@ -20,14 +20,13 @@ const text = new textStyle(); // Style instance
  * @param {string} body
  * @param {number} numberTo
  */
+
 async function sendMessage(body, numberTo) {
   client.messages
     .create({
       from: phoneFrom,
       body: body,
-      // to: `whatsapp:+57${numberTo}`,
-      // to: `whatsapp:+573202329139`,
-      to: `whatsapp:+573212413656`,
+      to: numberTo,
     })
     .then((message) => {
       const response = `Message ${
@@ -70,11 +69,11 @@ export async function main() {
       const insertDate = new Date(element.FchaInsertSAP);
 
       // Message for to be sent
-      const bodyDistribuidor = `Buen día señores *${
+      const bodyDistribuidor = `Buen día 😊👍 señores *${
         element.RazonSocial
-      }*, su pedido *#${element.DocNum}* 😊👍 ${
+      }*, su pedido *#${element.DocNum}* ${
         element.EstadoPedido === 'Insertado'
-          ? `fue recibido desde genesis el día ${receivedDate.toLocaleDateString()} y fue insertado en SAP el día ${insertDate.toLocaleDateString()}. Estado pedido: ${
+          ? `fue recibido desde génesis el día ${receivedDate.toLocaleDateString()} y fue insertado en SAP el día ${insertDate.toLocaleDateString()}. Estado pedido: ${
               element.TipoDcmnto === 'Orden'
                 ? '*EXITOSO ✅*'
                 : '*RETENIDO POR CARTERA 🔻*, por favor comunicarse lo más pronto posible'
@@ -86,13 +85,13 @@ export async function main() {
           : 'no se pudo recibir debido a un error'
       } `;
 
-      const bodyCoordinador = `Buen día coordinador(a) *${
+      const bodyCoordinador = `Buen día 😊👍 coordinador(a) *${
         element.Coordinador
-      }*, el pedido *#${element.DocNum}* 😊👍 de la distribuidora *${
+      }*, el pedido *#${element.DocNum}* de la distribuidora *${
         element.RazonSocial
       }* ${
         element.EstadoPedido === 'Insertado'
-          ? `fue recibido desde genesis el día ${receivedDate.toLocaleDateString()} y fue insertado en SAP el día ${insertDate.toLocaleDateString()}. Estado pedido: ${
+          ? `fue recibido desde génesis el día ${receivedDate.toLocaleDateString()} y fue insertado en SAP el día ${insertDate.toLocaleDateString()}. Estado pedido: ${
               element.TipoDcmnto === 'Orden'
                 ? '*EXITOSO ✅*'
                 : '*RETENIDO POR CARTERA 🔻*, por favor comunicarse lo más pronto posible'
@@ -107,8 +106,19 @@ export async function main() {
       // Check the number with start for digit 3
       if (startWhitThree(element.DistTelefono)) {
         // Function for sending message to the customer
-        sendMessage(bodyDistribuidor, element.DistTelefono); // Distribuidor message
-        sendMessage(bodyCoordinador, element.TelfCoord); // Coordinador message
+        // sendMessage(bodyDistribuidor, element.DistTelefono); // Distribuidor message
+        // sendMessage(bodyCoordinador, element.TelfCoord); // Coordinador message
+
+        const NUMBER_LIST = [
+          'whatsapp:+573212413656', // Me
+          'whatsapp:+573202329139', // Ingeniero
+          'whatsapp:+573204390159', // +573209152850 Juan
+        ];
+
+        // Send messages in a development branch
+        sendMessage(bodyDistribuidor, NUMBER_LIST[0]); // Felipe Silva
+        sendMessage(bodyCoordinador, NUMBER_LIST[1]); // Ingeniero Javier
+        sendMessage(bodyCoordinador, NUMBER_LIST[2]); // Juan Robayo
       } else {
         const response = `Phone number ${element.DistTelefono} invalid`;
         text.onFailed(response);

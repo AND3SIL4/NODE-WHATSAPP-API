@@ -38,7 +38,7 @@ async function connectDataBase() {
 
     // Realiza la consulta
     const result = await mssql.query`
-    SELECT TOP 2 P.DocNum, 
+    SELECT P.DocNum, 
     P.FchaInsert, 
     P.CardCode, 
     P.ZonaSN, 
