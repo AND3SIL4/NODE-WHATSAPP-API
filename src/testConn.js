@@ -1,9 +1,9 @@
-import mssql from 'mssql';
-import { config } from 'dotenv';
-import { ColorsStylesForText as textStyle } from './styles/textStyle.js';
-import { readFile, writeFile } from 'fs/promises';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import mssql from "mssql";
+import { config } from "dotenv";
+import { ColorsStylesForText as textStyle } from "./styles/textStyle.js";
+import { readFile, writeFile } from "fs/promises";
+import path from "path";
+import { fileURLToPath } from "url";
 
 // Crear instancia de los colores para el texto
 const text = new textStyle();
@@ -34,7 +34,7 @@ const settings = {
 async function connectDataBase() {
   try {
     await mssql.connect(settings);
-    text.onSuccess('Connection established successfully', true);
+    text.onSuccess("Connection established successfully", true);
 
     // Realiza la consulta
     const result = await mssql.query`
@@ -80,19 +80,19 @@ async function connectDataBase() {
 
 async function readData(filePath) {
   try {
-    const data = await readFile(filePath, 'utf8');
+    const data = await readFile(filePath, "utf8");
     // Valida si el archivo esta vacío y devuelve una lista vacía
     if (!data.trim()) {
       return [];
     }
     return JSON.parse(data);
   } catch (e) {
-    console.log('Error code is: ', e.code);
-    if (e.code === 'ENOENT') {
+    console.log("Error code is: ", e.code);
+    if (e.code === "ENOENT") {
       return [];
     } else {
       text.onFailed(e);
-      throw new Error('Error al leer los archivos');
+      throw new Error("Error al leer los archivos");
     }
   }
 }
@@ -104,11 +104,11 @@ async function readData(filePath) {
  */
 async function writeData(filePath, newData) {
   try {
-    await writeFile(filePath, JSON.stringify(newData, null, 2), 'utf8');
-    text.onSuccess('Data save correctly', true);
+    await writeFile(filePath, JSON.stringify(newData, null, 2), "utf8");
+    text.onSuccess("Data save correctly", true);
   } catch (e) {
     text.onFailed(e);
-    throw new Error('Error al guardar los datos');
+    throw new Error("Error al guardar los datos");
   }
 }
 
@@ -116,15 +116,15 @@ export async function main() {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
 
-  const filePath = path.join(__dirname, '../data', 'data.json');
+  const filePath = path.join(__dirname, "../data", "data.json");
 
   // Leer los datos existentes
   let datosExistentes = await readData(filePath);
 
   if (datosExistentes) {
-    text.onInfo('Datos encontrados exitosamente');
+    text.onInfo("Datos encontrados exitosamente");
   } else {
-    text.onFailed('No se encontraron datos');
+    text.onFailed("No se encontraron datos");
   }
 
   // Tomar los nuevos datos
@@ -156,8 +156,8 @@ export async function main() {
       noExist++;
     }
   });
-  console.log('Total new data: ', exist);
-  console.log('Total exist data: ', noExist);
+  console.log("Total new data: ", exist);
+  console.log("Total exist data: ", noExist);
 
   // Escribir datos en el archivo JSON
   await writeData(filePath, [...datosExistentes, ...datosParaAgregar]);
