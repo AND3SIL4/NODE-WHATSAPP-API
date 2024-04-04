@@ -62,6 +62,7 @@ async function connectDataBase() {
     ON D.DistCodigo = P.CardCode
     WHERE P.FchaInsert >= dateadd(MINUTE,-60,getdate())
     and P.EstadoPedido <> 'Pendiente'
+    order by DocNum
     `;
 
     return result.recordset;

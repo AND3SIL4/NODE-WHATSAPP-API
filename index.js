@@ -54,7 +54,7 @@ try {
   const json = JSON.parse(data);
   const previousDate = new Date(json[0].FchaInsert);
 
-  if (currentDate > previousDate && data.trim()) {
+  if (currentDate.getDay() > previousDate.getDay() && data.trim()) {
     await cleanUp();
   }
 } catch (error) {

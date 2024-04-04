@@ -31,7 +31,7 @@ async function sendMessage(body, numberTo) {
     .then((message) => {
       const response = `Message ${
         message.status === "queued" ? "sent" : "error"
-      } - ${numberTo}`;
+      }: ${numberTo}`;
       text.onSuccess(response, false);
     });
 }
@@ -125,15 +125,7 @@ export async function main() {
             isBodyDistribuidor = !isBodyDistribuidor;
           }
         }
-
-        const NUMBER_LIST = [
-          "whatsapp:+573212413656", // Felipe
-          //"whatsapp:+573202329139", // Ingeniero
-          //"whatsapp:+573209152850", // Juan
-        ];
-
-        sendMessage(bodyCoordinador, NUMBER_LIST[0]);
-        //distributeMessages();
+        distributeMessages();
         //sendMessage(bodyCoordinador, element.DistTelefono)
       } else {
         const response = `Phone number ${element.DistTelefono} invalid`;
