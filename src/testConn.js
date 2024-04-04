@@ -78,7 +78,7 @@ async function connectDataBase() {
  * @returns
  */
 
-async function readData(filePath) {
+export async function readData(filePath) {
   try {
     const data = await readFile(filePath, "utf8");
     // Valida si el archivo esta vacío y devuelve una lista vacía
@@ -87,7 +87,7 @@ async function readData(filePath) {
     }
     return JSON.parse(data);
   } catch (e) {
-    console.log("Error code is: ", e.code);
+    console.log("Error code is: ", e);
     if (e.code === "ENOENT") {
       return [];
     } else {

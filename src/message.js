@@ -111,9 +111,9 @@ export async function main() {
          */
         async function distributeMessages() {
           const NUMBER_LIST = [
-            //"whatsapp:+573212413656", // Felipe
-            "whatsapp:+573202329139", // Ingeniero
-            "whatsapp:+573209152850", // Juan
+            "whatsapp:+573212413656", // Felipe
+            //"whatsapp:+573202329139", // Ingeniero
+            //"whatsapp:+573209152850", // Juan
           ];
 
           let isBodyDistribuidor = false;
@@ -126,7 +126,15 @@ export async function main() {
           }
         }
 
-        distributeMessages();
+        const NUMBER_LIST = [
+          "whatsapp:+573212413656", // Felipe
+          //"whatsapp:+573202329139", // Ingeniero
+          //"whatsapp:+573209152850", // Juan
+        ];
+
+        sendMessage(bodyCoordinador, NUMBER_LIST[0]);
+        //distributeMessages();
+        //sendMessage(bodyCoordinador, element.DistTelefono)
       } else {
         const response = `Phone number ${element.DistTelefono} invalid`;
         text.onFailed(response);
