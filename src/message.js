@@ -2,17 +2,21 @@ import { config } from "dotenv";
 import twilio from "twilio";
 import { ColorsStylesForText as textStyle } from "./styles/textStyle.js";
 import { main as myJson } from "./testConn.js";
+import { startWhitThree } from "./validators/phoneNumber.js";
+import { TextToBeSend } from "./components/textToSend.js";
+import sendMessagesWithIntervals, {
+  clearIntervals,
+} from "./components/intervals.js";
 
 config();
 // Get environ variables
 const accountSid = process.env.accountSid;
 const authToken = process.env.authToken;
 const phoneFrom = process.env.phone;
-
 // Create a client using twilio
 const client = twilio(accountSid, authToken);
-
-const text = new textStyle(); // Style instance
+// Style instance
+const text = new textStyle();
 
 /**
  * This function consume the TWILIO API for sending messages, require the
@@ -37,20 +41,6 @@ async function sendMessage(body, numberTo) {
 }
 
 /**
- * This function return false y the number does not start with '3'
- * @param {number} number
- * @param {number} digit
- * @returns boolean
- */
-function startWhitThree(number) {
-  // Regular expression to check the length of the phone number, I gotta start with number 3 and contains 10 digits
-  var regex = /^3\d{9}$/;
-
-  // Check the regular expression
-  return regex.test(number);
-}
-
-/**
  * This function work calling the function on another file that returns an
  * array and manipulate in order to send messages
  */
@@ -64,69 +54,33 @@ export async function main() {
 
     // Iterate the result sent for connection function
     res.forEach((element) => {
-      const receivedDate = new Date(element.FchaInsert);
-      const insertDate = new Date(element.FchaInsertSAP);
-
-      // Message for to be sent
-      const bodyDistribuidor = `Buen día 😊👍 señores *${
-        element.RazonSocial
-      }*, su pedido *#${element.DocNum}* ${
-        element.EstadoPedido === "Insertado"
-          ? `fue recibido desde génesis el día ${receivedDate.toLocaleDateString()} y fue insertado en SAP el día ${insertDate.toLocaleDateString()}. Estado pedido: ${
-              element.TipoDcmnto === "Orden"
-                ? "*EXITOSO ✅*"
-                : "*RETENIDO POR CARTERA 🔻*, por favor comunicarse lo más pronto posible"
-            }. El valor bruto del pedido es de: *$${
-              element.ValorBruto
-            }* y el valor total es de: *$${element.ValorTotal}*. Zona SN: *${
-              element.ZonaSN
-            }*. EDS a la que pertenece el pedido: *${element.DistEDS}*.`
-          : "no se pudo recibir debido a un error"
-      } `;
-
-      const bodyCoordinador = `Buen día 😊👍 coordinador(a) *${
-        element.Coordinador
-      }*, el pedido *#${element.DocNum}* de la distribuidora *${
-        element.RazonSocial
-      }* ${
-        element.EstadoPedido === "Insertado"
-          ? `fue recibido desde génesis el día ${receivedDate.toLocaleDateString()} y fue insertado en SAP el día ${insertDate.toLocaleDateString()}. Estado pedido: ${
-              element.TipoDcmnto === "Orden"
-                ? "*EXITOSO ✅*"
-                : "*RETENIDO POR CARTERA 🔻*, por favor comunicarse lo más pronto posible"
-            }. El valor bruto del pedido es de: *$${
-              element.ValorBruto
-            }* y el valor total es de: *$${element.ValorTotal}*. Zona SN: *${
-              element.ZonaSN
-            }*. EDS a la que pertenece el pedido: *${element.DistEDS}*.`
-          : "no se pudo recibir debido a un error"
-      }`;
+      //Call the function to send the message
+      const bodyText = TextToBeSend(element);
 
       // Check the number with start for digit 3
       if (startWhitThree(element.DistTelefono)) {
-        // Llama a la función para distribuir mensajes
+        // Array of number to be sent in a development context
+        const NUMBER_LIST = [
+          "3212413656", // Felipe
+          "3202329139", // Ingeniero
+          "3209152850", // Juan
+        ];
+        //Iterate over every element of the list
+        NUMBER_LIST.forEach((number) => {
+          const PHONE_NUMBER = concatText(number);
+          sendMessagesWithIntervals(sendMessage, bodyText, PHONE_NUMBER);
+        });
 
-        /**
-         * Función principal para distribuir mensajes a diferentes números.
-         */
-        async function distributeMessages() {
-          const NUMBER_LIST = [
-            "whatsapp:+573212413656", // Felipe
-            //"whatsapp:+573202329139", // Ingeniero
-            //"whatsapp:+573209152850", // Juan
-          ];
+        NUMBER_LIST.forEach((number) => {
+          const PHONE_NUMBER = concatText(number);
+          setTimeout(() => {
+            clearIntervals(PHONE_NUMBER);
+          }, 5000);
+        });
 
-          let isBodyDistribuidor = false;
-          for (const phoneNumber of NUMBER_LIST) {
-            const body = isBodyDistribuidor
-              ? bodyDistribuidor
-              : bodyCoordinador;
-            await sendMessage(body, phoneNumber);
-            isBodyDistribuidor = !isBodyDistribuidor;
-          }
-        }
-        distributeMessages();
-        //sendMessage(bodyCoordinador, element.DistTelefono)
+        //!Uncomment the following code to pass on a production context
+        // const phoneTo = concatText(element.DistTelefono);
+        // sendMessage(bodyText, phoneTo);
       } else {
         const response = `Phone number ${element.DistTelefono} invalid`;
         text.onFailed(response);
@@ -135,4 +89,8 @@ export async function main() {
   } catch (error) {
     console.error(error);
   }
+}
+
+function concatText(numberToBeConcat) {
+  return `whatsapp:${numberToBeConcat}`;
 }
