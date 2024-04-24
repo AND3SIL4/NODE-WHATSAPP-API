@@ -2,14 +2,12 @@ import { main as message } from "./src/message.js";
 import { ColorsStylesForText as styleText } from "./src/styles/textStyle.js";
 import { schedule } from "node-cron";
 
-const SET_INTERVAL = "*/20 * * * *"; // Run every 60 minutes
+const SET_INTERVAL = "*/10 * * * *"; // Run every 10 minutes
 const text = new styleText();
-const currentDate = new Date();
 
 // Función para ejecutar el proceso principal
 async function executeMainProcess() {
   try {
-    text.onInfo(`Working at: ${currentDate}`);
     await message(); //Executing the main process
   } catch (e) {
     text.onFailed("An error has occurred", e);

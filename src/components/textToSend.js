@@ -18,7 +18,7 @@ export const TextToBeSend = (element) => {
     DistEDS,
   } = element;
   // Structure message for being send
-  const body = `Buen día 😊👍, queremos infórmate que el pedido #${DocNum} de la EDS ${DistEDS} y distribuidora ${RazonSocial} realizado desde la zona SN: ${ZonaSN} ${
+  const body = `Buen día 😊, queremos infórmate que el pedido #${DocNum} de la EDS ${DistEDS} y distribuidora ${RazonSocial} realizado desde la zona SN: ${ZonaSN} ${
     EstadoPedido === "Insertado"
       ? `fue recibido desde génesis a las ${FchaInsert} y fue insertado en SAP a las ${insertDate}. El estado del pedido es: ${
           TipoDcmnto === "Orden"

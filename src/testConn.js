@@ -162,6 +162,6 @@ export async function main() {
 
   // Escribir datos en el archivo JSON
   await writeData(filePath, [...datosExistentes, ...datosParaAgregar]);
-
+ 
   return datosParaAgregar;
 }
