@@ -17,16 +17,24 @@ export const TextToBeSend = (element) => {
     ZonaSN,
     DistEDS,
   } = element;
+
   // Structure message for being send
-  const body = `Buen día 😊, queremos infórmate que el pedido #${DocNum} de la EDS ${DistEDS} y distribuidora ${RazonSocial} realizado desde la zona SN: ${ZonaSN} ${
-    EstadoPedido === "Insertado"
-      ? `fue recibido desde génesis a las ${FchaInsert} y fue insertado en SAP a las ${insertDate}. El estado del pedido es: ${
-          TipoDcmnto === "Orden"
-            ? "EXITOSO ✅"
-            : "RETENIDO POR CARTERA 🔻, por favor comunicarse lo más pronto posible con el area encargada"
-        }. Valor bruto: $${ValorBruto} y Valor total es de: $${ValorTotal}.`
-      : "no se pudo recibir debido a un error"
-  } `;
+  const body = `BUEN DÍA 😊, QUEREMOS INFÓRMATE LOS SIGUIENTES DATOS DE TU PEDIDO #${DocNum}
+*EDS*: ${DistEDS}
+*DISTRIBUIDORA*: ${RazonSocial} 
+*ZONA SN*: ${ZonaSN} 
+${
+EstadoPedido === "Insertado"
+? `FUE *RECIBIDO* EN GÉNESIS EN LA FECHA: ${FchaInsert} Y FUE *INSERTADO* EN SAP EN LA FECHA: ${insertDate}
+*ESTADO*: ${
+TipoDcmnto === "Orden"
+? "EXITOSO ✅"
+: "*RETENIDO POR CARTERA 🔻*, POR FAVOR COMUNICARSE LO MÁS PRONTO POSIBLE CON EL AREA ENCARGADA"
+}
+*VALOR BRUTO*: $${ValorBruto} 
+*VALOR TOTAL*: $${ValorTotal}`
+    : "*NO SE PUDO RECIBIR, DEBIDO A UN ERROR 🔻*"
+} `;
 
   return body;
 };
