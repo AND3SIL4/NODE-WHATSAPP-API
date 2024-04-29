@@ -1,9 +1,10 @@
+import { formatoPrecio } from "../validators/priceFormat.js";
+
 /**
  * This function is a structure for making a response in order to be sent to the user
  * @param {JSON object} element
  * @returns {string} body
  */
-
 export const TextToBeSend = (element) => {
   const {
     RazonSocial,
@@ -47,6 +48,10 @@ export const TextToBeSend = (element) => {
   const genesisInsert = `${dayFechaGenesis} ${genesis.getUTCDate()} ${hourFechaGenesis}:${minutesFechaGenesis}:${secondsFechaGenesis}`;
   const sapInsert = `${dayFechaSap} ${sap.getUTCDate()} ${hourFechaSap}:${minutesFechaSap}:${secondsFechaSap}`;
 
+  //Format prices
+  const valorBruto = formatoPrecio(ValorBruto);
+  const valorTotal = formatoPrecio(ValorTotal);
+
   // Structure message for being send
   const body = `BUEN DÍA 😊, QUEREMOS INFÓRMATE LOS SIGUIENTES DATOS DE TU PEDIDO #${DocNum}
 *EDS*: ${DistEDS}
@@ -60,8 +65,8 @@ ${
           ? "EXITOSO ✅"
           : "RETENIDO POR CARTERA 🔻, POR FAVOR COMUNICARSE LO MÁS PRONTO POSIBLE CON EL AREA ENCARGADA"
       }
-*VALOR BRUTO*: $${ValorBruto} 
-*VALOR TOTAL*: $${ValorTotal}`
+*VALOR BRUTO*: ${valorBruto} 
+*VALOR TOTAL*: ${valorTotal}`
     : "*NO SE PUDO RECIBIR, DEBIDO A UN ERROR 🔻*"
 } `;
 
