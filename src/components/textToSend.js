@@ -63,7 +63,7 @@ ${
 *ESTADO*: ${
         TipoDcmnto === "Orden"
           ? "EXITOSO ✅"
-          : "RETENIDO POR CARTERA 🔻, POR FAVOR COMUNICARSE LO MÁS PRONTO POSIBLE CON EL AREA ENCARGADA"
+          : "RETENIDO POR CARTERA 🔻, POR FAVOR COMUNICARSE LO MÁS PRONTO POSIBLE CON CARTERA"
       }
 *VALOR BRUTO*: ${valorBruto} 
 *VALOR TOTAL*: ${valorTotal}`
