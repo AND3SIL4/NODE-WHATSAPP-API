@@ -8,7 +8,8 @@ This project is designed to connect to the WhatsApp API for sending messages to 
 2. Navigate to the project directory: `cd whatsapp-api`
 3. Install dependencies: `npm install`
 4. Make a directory called `data` in root and then a file called `data.json`
-5. Para ejecutar el script en segundo plano:
+5. Make a file on the project root `.env` and set the environment variables
+6. Para ejecutar el script en segundo plano:
    1. `npm install -g pm2`
    2. pm2 start tu_script.js --name "nombre_de_proceso"
    3. Para detener el proceso: `pm2 stop nombre_de_proceso`
@@ -20,13 +21,7 @@ To run the application, execute the following command:
 
 `npm start`
 
-## Usage of ngrok
-
-`ngrok http [port-to-use]`
-
-This will start the Node.js server and begin sending messages to customers based on the configured schedule.
-
-## Configuration
+## Configuration environment variables
 
 Ensure you have the following environment variables set:
 
