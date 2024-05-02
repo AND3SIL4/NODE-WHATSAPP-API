@@ -20,13 +20,13 @@ export const TextToBeSend = (element) => {
   } = element;
 
   const weekDays = [
-    "LUNES",
-    "MARTES",
-    "MIÉRCOLES",
-    "JUEVES",
-    "VIERNES",
-    "SÁBADO",
-    "DOMINGO",
+    "lunes",
+    "martes",
+    "miércoles",
+    "jueves",
+    "viernes",
+    "sábado",
+    "domingo",
   ];
 
   const genesis = new Date(FchaInsert);
