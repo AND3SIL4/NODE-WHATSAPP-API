@@ -65,9 +65,9 @@ export async function main() {
       if (startWhitThree(element.DistTelefono)) {
         // Array of number to be sent in a development context
         const NUMBER_LIST = [
-          "3212413656", // Felipe
-          //"3202329139", // Ingeniero
-          //"3209152850", // Juan
+          "3212413656", //Felipe
+          //"3202329139", //Ingeniero
+          //"3209152850", //Juan
         ];
 
         NUMBER_LIST.forEach((e) => {
@@ -77,8 +77,8 @@ export async function main() {
         });
 
         // //!Uncomment the following code to pass on a production context
-        // const phoneTo = concatText(element.DistTelefono);
-        // sendMessage(bodyText, phoneTo);
+        const phoneTo = concatText(element.DistTelefono);
+        sendMessage(bodyText, phoneTo);
       } else {
         const response = `Phone number ${element.DistTelefono} invalid`;
         text.onFailed(response);

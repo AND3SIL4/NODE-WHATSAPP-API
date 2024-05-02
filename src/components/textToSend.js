@@ -53,21 +53,21 @@ export const TextToBeSend = (element) => {
   const valorTotal = formatoPrecio(ValorTotal);
 
   // Structure message for being send
-  const body = `BUEN DÍA 😊, QUEREMOS INFÓRMATE LOS SIGUIENTES DATOS DE TU PEDIDO #${DocNum}
+  const body = `Buen día 😊, queremos informarte los siguientes datos del pedido #${DocNum}
 *EDS*: ${DistEDS}
-*DISTRIBUIDORA*: ${RazonSocial} 
-*ZONA SN*: ${ZonaSN} 
+*Distribuidora*: ${RazonSocial} 
+*Zona SN*: ${ZonaSN} 
 ${
   EstadoPedido === "Insertado"
-    ? `FUE *RECIBIDO* EN GÉNESIS EL ${genesisInsert} Y FUE INSERTADO EN SAP EL ${sapInsert}
-*ESTADO*: ${
+    ? `Fue *recibido* en génesis el ${genesisInsert} y fue insertado en SAP el ${sapInsert}
+*Estado*: ${
         TipoDcmnto === "Orden"
-          ? "EXITOSO ✅"
-          : "RETENIDO POR CARTERA 🔻, POR FAVOR COMUNICARSE LO MÁS PRONTO POSIBLE CON CARTERA"
+          ? "exitoso ✅"
+          : "retenido por cartera 🔻, por favor comunicarse lo más pronto posible con cartera"
       }
-*VALOR BRUTO*: ${valorBruto} 
-*VALOR TOTAL*: ${valorTotal}`
-    : "*NO SE PUDO RECIBIR, DEBIDO A UN ERROR 🔻*"
+*Valor bruto*: ${valorBruto} 
+*Valor total*: ${valorTotal}`
+    : "*no se pudo recibir debido a un error, por favor comuníquese con el area TIC 🔻*"
 } `;
 
   return body;
