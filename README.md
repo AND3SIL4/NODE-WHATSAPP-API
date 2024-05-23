@@ -2,28 +2,28 @@
 
 This project is designed to connect to the WhatsApp API for sending messages to customers.
 
-## Installation
+## Instalación
 
-1. Clone the repository: `git clone https://github.com/and3sil4/whatsapp-api.git`
-2. Navigate to the project directory: `cd whatsapp-api`
-3. Install dependencies: `npm install`
-4. Make a directory called `data` in root and then a file called `data.json`
-5. Make a file on the project root `.env` and set the environment variables
+1. Clonar el repositorio: `git clone https://github.com/and3sil4/whatsapp-api.git ./wt-project`.
+2. Navegar hastas la carpeta: `cd wt-project`.
+3. Ejecutar `npm install` para instalar las dependencias.
+4. Crear una capeta en la raíz del proyecto llamada `data`dentro de la carpeta crear un archivo llamado `data.json`
+5. En la raíz del proyecto crear un acrhivo llamado `.env` configurar las variables de entorno.
 6. Para ejecutar el script en segundo plano:
-   1. `npm install -g pm2`
-   2. pm2 start tu_script.js --name "nombre_de_proceso"
+   1. Instalar la siguiente libreria `npm install -g pm2`
+   2. Ejecutar `pm2 start index.js --name "nombre_de_proceso"`
    3. Para detener el proceso: `pm2 stop nombre_de_proceso`
-   4. Para reiniciar el proceso> `pm2 restart nombre_de_proceso`
+   4. Para reiniciar el proceso: `pm2 restart nombre_de_proceso`
 
-## Usage
+## Ejecutar el escript 
 
-To run the application, execute the following command:
+Ejecutar el siguiente comando en la terminal y en la raíz del proyecto
 
 `npm start`
 
-## Configuration environment variables
+## Configuración variables de entorno
 
-Ensure you have the following environment variables set:
+En el archivo `.env` asegurarse de tener la siguiente configuraración. 
 
 - user: Database username
 - password: Database password
@@ -32,7 +32,6 @@ Ensure you have the following environment variables set:
 - accountSid: Twilio account SID
 - authToken: Twilio authentication token
 - phone: Twilio phone number
-- These environment variables are necessary for the proper functioning of the application.
 
 ## Technologies Used
 
